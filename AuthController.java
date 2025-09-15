@@ -1,3 +1,5 @@
+delete unwanted files
+    
 package com.example.hotelapp.controller;
 
 import com.example.hotelapp.model.User;
@@ -36,3 +38,4 @@ public class AuthController {
                 .orElse(ResponseEntity.status(401).body(Map.of("error","Invalid credentials")));
     }
 }
+isjdjd
