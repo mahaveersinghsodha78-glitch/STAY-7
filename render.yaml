@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: stay7-frontend
-    env: node
-    plan: free
-    buildCommand: npm install && npm run build
-    startCommand: npm run preview
-    nodeVersion: 18
