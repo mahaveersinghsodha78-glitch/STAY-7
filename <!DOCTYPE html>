@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stay7 - GitHub Files Replacement Guide</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #0f172a; color: white; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        header { text-align: center; padding: 20px; background: #1e293b; border-radius: 10px; margin-bottom: 20px; }
+        h1 { color: #fbbf24; }
+        .steps { background: #334155; padding: 20px; border-radius: 10px; margin: 15px 0; }
+        .step { margin: 15px 0; padding: 15px; background: #475569; border-radius: 5px; }
+        .code { background: #1e1e1e; padding: 15px; border-radius: 5px; margin: 10px 0; font-family: monospace; }
+        .btn { background: #10b981; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; margin: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 GitHub Files Replacement Guide</h1>
+            <p>पुरानी files को सही तरीके से replace करें</p>
+        </header>
+
+        <div class="steps">
+            <div class="step">
+                <h3>Step 1: नई Files Create करें</h3>
+                <p>नीचे दिए गए buttons से सभी fixed files download करें</p>
+                <button class="btn" onclick="downloadFile('package.json')">Download package.json</button>
+                <button class="btn" onclick="downloadFile('index.html')">Download index.html</button>
+                <button class="btn" onclick="downloadFile('vite.config.js')">Download vite.config.js</button>
+            </div>
+
+            <div class="step">
+                <h3>Step 2: GitHub पर Upload करें</h3>
+                <p>नई files को GitHub repository में upload करें</p>
+                <div class="code">
+1. GitHub पर अपने repository में जाएं
+2. "Add file" → "Upload files" पर click करें
+3. सभी नई files upload करें
+4. Commit changes करें
+                </div>
+            </div>
+
+            <div class="step">
+                <h3>Step 3: पुरानी Files Delete करें (Optional)</h3>
+                <p>अगर duplicate files हैं तो delete करें</p>
+                <div class="code">
+- सिर्फ़ उन्हीं files को delete करें जो duplicate हैं
+- src/ folder की files ना delete करें
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="btn" onclick="downloadAllFiles()" style="background: #3b82f6;">
+                📥 Download All Fixed Files
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const files = {
+            'package.json': `{
+  "name": "stay7-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^4.4.5"
+  }
+}`,
+
+            'index.html': `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stay7 - Hotel Booking</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="./src/main.jsx"></script>
+</body>
+</html>`,
+
+            'vite.config.js': `import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 3000,
+  }
+})`,
+
+            'src/main.jsx': `import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)`,
+
+            'src/App.jsx': `import { useState } from 'react'
+import './App.css'
+
+function App() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>🏨 Welcome to Stay7</h1>
+        <p>Book your perfect stay with us!</p>
+        <button onClick={() => setCount(count + 1)}>
+          Count: {count}
+        </button>
+      </header>
+    </div>
+  )
+}
+
+export default App`,
+
+            'src/App.css': `.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}`,
+
+            'src/index.css': `body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}`,
+
+            'render.yaml': `services:
+  - type: web
+    name: stay7-frontend
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run preview
+    nodeVersion: 18`
+        };
+
+        function downloadFile(filename) {
+            const content = files[filename];
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadAllFiles() {
+            let allContent = 'STAY7 FIXED FILES - Copy and paste to GitHub\\n\\n';
+            
+            for (const [filename, content] of Object.entries(files)) {
+                allContent += `===== ${filename} =====\\n${content}\\n\\n`;
+            }
+            
+            allContent += 'INSTRUCTIONS:\\n';
+            allContent += '1. Copy each file content\\n';
+            allContent += '2. Create new files in GitHub\\n';
+            allContent += '3. Upload all files\\n';
+            allContent += '4. Delete only if duplicate files exist\\n';
+            allContent += '5. Deploy on Render - SUCCESS! ✅';
+            
+            const blob = new Blob([allContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'stay7-all-fixed-files.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert('All fixed files downloaded! Follow the instructions in the file.');
+        }
+    </script>
+</body>
+</html>
